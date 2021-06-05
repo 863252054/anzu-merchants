@@ -1,8 +1,8 @@
 <template>
-    <div>
-      <p>我是第一个子组件</p>
-<!--      <button @click="getName">获取共享数据</button>-->
-    </div>
+  <div>
+    <p>我是第二个子组件</p>
+<!--    <button @click="getName">获取共享数据</button>-->
+  </div>
 </template>
 
 <script>
@@ -16,7 +16,7 @@ export default {
 }
 </script>
 <style scoped>
-    p{
-      background: skyblue;
-    }
+p{
+  /*background: skyblue;*/
+}
 </style>

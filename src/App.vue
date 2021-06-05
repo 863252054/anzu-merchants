@@ -1,31 +1,36 @@
 <template>
   <div id="app">
-    <p>{{ msg }}</p>
-    <button @click="say">我是按钮</button>
-    <One></One>
+
+    <router-view />
+    <van-tabbar route>
+      <van-tabbar-item replace to="/goods" icon="bag">商品</van-tabbar-item>
+      <van-tabbar-item replace to="/home" icon="manager">个人</van-tabbar-item>
+    </van-tabbar>
   </div>
+
 </template>
 
 <script>
-import One from './components/One.vue'
+
 export default {
   name: 'app',
   data: function () {
     return {
-      msg: '112'
+      active: 0
     }
   },
   methods: {
-    say () {
-      console.log('say')
-    }
+
   },
   components: {
-    One: One
+
   }
 }
 </script>
 
 <style scoped>
-
+#app{
+  width: 100%;
+  height: 100%;
+}
 </style>
