@@ -102,6 +102,7 @@ export default {
           } else {
             _this.$toast.success('登录成功')
             _this.$store.state.login_number = _this.login_number
+            _this.$store.state.merchantAddress = []
             _this.goToPage('home')
           }
         }).catch(function (err) {

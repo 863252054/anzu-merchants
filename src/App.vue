@@ -14,13 +14,24 @@
 
 export default {
   name: 'app',
-  data: function () {
+  provide () {
     return {
-      active: 0
+      reload: this.reload
+    }
+  },
+  data () {
+    return {
+      active: 0,
+      isRouterAlive: true
     }
   },
   methods: {
-
+    reload () {
+      this.isRouterAlive = false
+      this.$nextTick(function () {
+        this.isRouterAlive = true
+      })
+    }
   },
   components: {
 

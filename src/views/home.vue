@@ -76,10 +76,43 @@ export default {
       }).catch(function (err) {
         console.log(err)
       })
+    },
+    initAddress () {
+      const _this = this
+      this.$ajax.get('http://47.111.10.102:8085/merchant_address/findAllByMerchantId', {
+        params: {
+          merchant_id: _this.$store.state.merchant_id
+        }
+      }).then(function (res) {
+        if (res.data.port === '500') {
+          _this.$store.state.merchantAddress = []
+        } else {
+          const addressList = []
+          const resList = res.data.data
+          for (let i = 0; i < resList.length; i++) {
+            const addressItem = {}
+            addressItem.id = resList[i].id
+            addressItem.province = resList[i].prov
+            addressItem.city = resList[i].city
+            addressItem.county = resList[i].area
+            addressItem.addressDetail = resList[i].detail
+            addressItem.name = resList[i].name
+            addressItem.tel = resList[i].tel
+            addressItem.areaCode = resList[i].addressCode
+            addressItem.isDefault = resList[i].isDefault === 1
+            addressItem.address = addressItem.province + addressItem.city + addressItem.county + addressItem.addressDetail
+            addressList.push(addressItem)
+          }
+          _this.$store.state.merchantAddress = addressList
+        }
+      }).catch(function (err) {
+        console.log(err)
+      })
     }
   },
-  mounted () {
+  beforeMount () {
     this.initInfo()
+    this.initAddress()
   },
   computed: {
     balanceAfter () {
