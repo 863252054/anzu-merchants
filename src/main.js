@@ -5,10 +5,14 @@ import router from './router/router'
 import 'lib-flexible/flexible'
 import axios from 'axios'
 import qs from 'qs'
-import { NavBar, Toast, Card, SubmitBar, Tabbar, TabbarItem, Col, Row, Icon, Cell, CellGroup, Image as VanImage, AddressList, AddressEdit, Empty, Button, PasswordInput, NumberKeyboard, Field, RadioGroup, Radio, Checkbox, CheckboxGroup, Tab, Tabs } from 'vant'
-
+import { NavBar, Toast, Card, SubmitBar, Tabbar, TabbarItem, Col, Row, Icon, Cell, CellGroup, Image as VanImage, AddressList, AddressEdit, Empty, Button, PasswordInput, NumberKeyboard, Field, RadioGroup, Radio, Checkbox, CheckboxGroup, Tab, Tabs, Form, Picker, Popup, Uploader } from 'vant'
 import '../src/assets/resetui.less'
 
+Vue.use(Uploader)
+Vue.use(Popup)
+Vue.use(Picker)
+Vue.use(Form)
+Vue.use(Field)
 Vue.use(Tab)
 Vue.use(Tabs)
 Vue.use(CheckboxGroup)

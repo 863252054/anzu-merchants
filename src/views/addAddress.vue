@@ -74,6 +74,11 @@ export default {
       }).catch(function (err) {
         console.log(err)
       })
+    },
+    mounted () {
+      if (this.$store.state.merchant_id === '') {
+        this.$router.push('home')
+      }
     }
   }
 }

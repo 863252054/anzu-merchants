@@ -110,9 +110,8 @@ export default {
       })
     }
   },
-  beforeMount () {
+  mounted () {
     this.initInfo()
-    this.initAddress()
   },
   computed: {
     balanceAfter () {

@@ -7,7 +7,7 @@
 
     </van-nav-bar>
     <!-- 没有数据的占位图 -->
-    <div v-show="list.length<1">
+    <div v-show="this.$store.state.merchantAddress.length<1">
       <van-empty description="您还没有添加地址哦" />
     </div>
     <van-address-list
@@ -82,6 +82,9 @@ export default {
     }
   },
   mounted () {
+    if (this.$store.state.merchant_id === '') {
+      this.$router.push('home')
+    }
     this.initAddress()
   }
 }

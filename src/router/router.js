@@ -7,7 +7,7 @@ const routes = [
     redirect: '/home',
     // 是否数据缓存
     meta: {
-      keepAlive: true
+      // keepAlive: true
     }
   },
   {
@@ -38,7 +38,12 @@ const routes = [
   }, {
     path: '/goods',
     name: 'goods',
-    component: () => import('../views/goods')
+    component: (resolve) => require(['../views/goods'], resolve),
+    children: [{
+      path: 'addGoods',
+      name: 'addGoods',
+      component: (resolve) => require(['../views/addGoods'], resolve)
+    }]
   }
 ]
 

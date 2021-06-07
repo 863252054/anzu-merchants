@@ -25,6 +25,9 @@ export default {
     }
   },
   mounted () {
+    if (this.$store.state.merchant_id === '') {
+      this.$router.push('home')
+    }
     this.addressInfo = this.$route.params.content
   },
   methods: {
