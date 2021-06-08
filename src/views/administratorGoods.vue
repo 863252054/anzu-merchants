@@ -1,44 +1,20 @@
 <template>
   <div id="goods">
-    <van-nav-bar title="商品"
-                 fixed
-                 @click-right="addGoods">
-      <template #right>
-        <van-icon name="plus" size="18" />
-      </template>
+    <van-nav-bar title="商品审核"
+                 fixed>
     </van-nav-bar>
     <van-tabs type="card" style="margin-top:1.4rem; margin-bottom: 1.4rem">
-      <van-tab title="已上架">
-        <div v-show="this.$store.state.upGoodsList.length === 0">
+      <van-tab title="待审核">
+        <div v-show="this.$store.state.checkGoodsList.length === 0">
           <van-empty
           class="custom-image"
           image="https://img01.yzcdn.cn/vant/custom-empty-image.png"
           description="空空如也"
         />
         </div>
-        <goodsCard :goodsList="this.$store.state.upGoodsList" :status=1></goodsCard>
+        <administratorGoodsCard :goodsList="this.$store.state.checkGoodsList" :status=0></administratorGoodsCard>
       </van-tab>
-      <van-tab title="审核中">
-        <div v-show="this.$store.state.checkGoodsList.length === 0">
-          <van-empty
-            class="custom-image"
-            image="https://img01.yzcdn.cn/vant/custom-empty-image.png"
-            description="空空如也"
-          />
-        </div>
-        <goodsCard :goodsList="this.$store.state.checkGoodsList" :status=0></goodsCard>
-      </van-tab>
-      <van-tab title="已下架">
-        <div v-show="this.$store.state.downGoodsList.length === 0">
-          <van-empty
-            class="custom-image"
-            image="https://img01.yzcdn.cn/vant/custom-empty-image.png"
-            description="空空如也"
-          />
-        </div>
-        <goodsCard :goodsList="this.$store.state.downGoodsList" :status=-1></goodsCard>
-      </van-tab>
-      <van-tab title="需调整">
+      <van-tab title="已驳回">
         <div v-show="this.$store.state.failGoodsList.length === 0">
           <van-empty
             class="custom-image"
@@ -46,10 +22,19 @@
             description="空空如也"
           />
         </div>
-        <goodsCard :goodsList="this.$store.state.failGoodsList" :status=2></goodsCard>
+        <administratorGoodsCard :goodsList="this.$store.state.failGoodsList" :status=2></administratorGoodsCard>
+      </van-tab>
+      <van-tab title="已过审">
+        <div v-show="this.$store.state.upGoodsList.length === 0">
+          <van-empty
+            class="custom-image"
+            image="https://img01.yzcdn.cn/vant/custom-empty-image.png"
+            description="空空如也"
+          />
+        </div>
+        <administratorGoodsCard :goodsList="this.$store.state.upGoodsList" :status=1></administratorGoodsCard>
       </van-tab>
     </van-tabs>
-
     <transition name="router-slider"
                 mode="out-in">
       <router-view></router-view>
@@ -58,34 +43,26 @@
 </template>
 
 <script>
-import goodsCard from '../components/goodsCard'
+import administratorGoodsCard from '../components/administratorGoodsCard'
 export default {
   name: 'goods',
   methods: {
-    addGoods () {
-      this.$router.push('goods/addGoods')
-    },
-    getGoodsList () {
+    getAllGoodsList () {
       const _this = this
-      this.$ajax.get('http://47.111.10.102:8085/goods/findAllByMerchantId', {
-        params: {
-          merchant_id: _this.$store.state.merchant_id
-        }
-      }).then(function (res) {
+      this.$ajax.get('http://47.111.10.102:8085/goods/findAllForAdmin').then(function (res) {
+        console.log(res)
         if (res.data.port === '500') {
           _this.$store.state.allList = []
         } else {
           _this.$store.state.allList = res.data.data
         }
         // 清空数组
-        _this.$store.state.downGoodsList = []
         _this.$store.state.checkGoodsList = []
         _this.$store.state.upGoodsList = []
         _this.$store.state.failGoodsList = []
         for (let i = 0; i < _this.$store.state.allList.length; i++) {
           const item = _this.$store.state.allList[i]
-          if (item.status === -1) _this.$store.state.downGoodsList.push(item)
-          else if (item.status === 0) _this.$store.state.checkGoodsList.push(item)
+          if (item.status === 0) _this.$store.state.checkGoodsList.push(item)
           else if (item.status === 2) _this.$store.state.failGoodsList.push(item)
           else _this.$store.state.upGoodsList.push(item)
         }
@@ -98,11 +75,11 @@ export default {
     if (this.$store.state.merchant_id === '') {
       this.$router.push({ name: 'login' })
     } else {
-      this.getGoodsList()
+      this.getAllGoodsList()
     }
   },
   components: {
-    goodsCard: goodsCard
+    administratorGoodsCard: administratorGoodsCard
   }
 }
 </script>

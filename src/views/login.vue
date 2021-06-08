@@ -6,9 +6,10 @@
     <div style="text-align: center; margin-top: 0.6rem; margin-bottom: 0.5rem;" >
       <van-image
         fit="contain"
-        round
+        round width="180px"
+        height="130px"
         style="box-shadow: 2px 2px 5px #000"
-        src="http://yuan619.xyz/xuyang/anzu-merchant/anzu-logo.png"
+        :src="require('../assets/anzu-logo.png')"
       />
     </div>
 
@@ -102,15 +103,33 @@ export default {
           } else {
             _this.$toast.success('登录成功')
             _this.$store.state.login_number = _this.login_number
-            _this.$store.state.merchantAddress = []
-            _this.goToPage('home')
+            _this.checkAdministrator()
           }
         }).catch(function (err) {
           console.log(err)
         })
       }
+    },
+    checkAdministrator () {
+      const _this = this
+      this.$ajax.get('http://47.111.10.102:8085/merchant/findByAccount', {
+        params: {
+          account: _this.$store.state.login_number
+        }
+      }).then(function (res) {
+        _this.$store.state.admin = res.data.data.adminFlag
+        if (_this.$store.state.admin === 1) {
+          _this.goToPage('administratorHome')
+        } else {
+          _this.$store.state.merchantAddress = []
+          _this.goToPage('home')
+        }
+      }).catch(function (err) {
+        console.log(err)
+      })
     }
   }
+
 }
 </script>
 <style scoped lang="less">

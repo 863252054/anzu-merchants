@@ -4,7 +4,7 @@ Vue.use(Router)
 const routes = [
   {
     path: '/',
-    redirect: '/home',
+    redirect: '/login',
     // 是否数据缓存
     meta: {
       // keepAlive: true
@@ -16,35 +16,82 @@ const routes = [
     component: () => import('../views/login')
   },
   {
-    path: '/home',
-    name: 'home',
-    component: () => import('../views/home'),
-    children: [{
-      path: 'myAddress',
-      name: 'myAddress',
-      component: () => import('../views/myAddress'),
-      children: [{
-        // 添加地址
-        path: 'addAddress',
-        name: 'addAddress',
-        component: () => import('../views/addAddress')
-      }, {
-        // 编辑地址
-        path: 'editAddress',
-        name: 'editAddress',
-        component: () => import('../views/editAddress')
-      }]
-    }]
-  }, {
-    path: '/goods',
-    name: 'goods',
-    component: (resolve) => require(['../views/goods'], resolve),
-    children: [{
-      path: 'addGoods',
-      name: 'addGoods',
-      component: (resolve) => require(['../views/addGoods'], resolve)
-    }]
+    path: '/merchantApp',
+    name: 'merchantApp',
+    component: () => import('../views/merchantApp'),
+    children: [
+      {
+        path: '/merchantApp',
+        redirect: '/merchantApp/home'
+      },
+      {
+        path: 'home',
+        name: 'home',
+        component: () => import('../views/home'),
+        children: [{
+          path: 'myAddress',
+          name: 'myAddress',
+          component: () => import('../views/myAddress'),
+          children: [{
+          // 添加地址
+            path: 'addAddress',
+            name: 'addAddress',
+            component: () => import('../views/addAddress')
+          }, {
+          // 编辑地址
+            path: 'editAddress',
+            name: 'editAddress',
+            component: () => import('../views/editAddress')
+          }]
+        }]
+      },
+      {
+        path: 'goods',
+        name: 'goods',
+        component: () => import('../views/goods'),
+        children: [{
+          path: 'addGoods',
+          name: 'addGoods',
+          component: () => import('../views/addGoods')
+        },
+        {
+          path: 'editGoods',
+          name: 'editGoods',
+          component: () => import('../views/editGoods')
+        }]
+      }
+    ]
+
+  },
+  {
+    path: '/administratorApp',
+    name: 'administratorApp',
+    component: () => import('../views/administratorApp'),
+    children: [
+      {
+        path: '/administratorApp',
+        redirect: '/administratorApp/administratorHome'
+      },
+      {
+        path: 'administratorHome',
+        name: 'administratorHome',
+        component: () => import('../views/administratorHome')
+      },
+      {
+        path: 'administratorGoods',
+        name: 'administratorGoods',
+        component: () => import('../views/administratorGoods'),
+        children: [
+          {
+            path: 'seeGoods',
+            name: 'seeGoods',
+            component: () => import('../views/seeGoods')
+          }]
+      }
+    ]
+
   }
+
 ]
 
 const router = new Router({

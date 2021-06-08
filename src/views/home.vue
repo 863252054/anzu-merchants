@@ -54,7 +54,6 @@
 
 <script>
 export default {
-  name: 'home',
   methods: {
     goToPage (name) {
       this.$router.push({ name })

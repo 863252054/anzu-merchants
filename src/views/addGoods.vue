@@ -34,7 +34,6 @@
         </template>
       </van-field>
     </div>
-
     <div style="margin-top: 12px">
       <van-field
         readonly
@@ -107,14 +106,13 @@
 
     </div>
     <div style="margin: 16px">
-      <van-button round block type="info" native-type="submit">提交</van-button>
+      <van-button round block type="info" native-type="submit">提交商品</van-button>
     </div>
   </van-form>
 </div>
 </template>
 
 <script>
-// import { getUploadToken } from '../config/upToken'
 
 export default {
   name: 'addGoods',
@@ -155,14 +153,11 @@ export default {
       }
       // 添加额外的参数
       formData.append('x:owner', _this.$store.state.login_name)
-      console.log(formData.hash)
-      console.log(file.file)
       // 添加请求头
       const config = {
         headers: { 'Content-Type': 'multipart/form-data' }
       }
       this.$ajax.post(url, formData, config).then(res => {
-        console.log(res.status)
         if (res.status === 200) {
           _this.$toast({ message: '上传成功!' })
           _this.pic_url = 'http://yuan619.xyz/' + res.data.hash
@@ -180,6 +175,58 @@ export default {
       this.showModePicker = false
     },
     onSubmit (values) {
+      const _this = this
+      if (this.mode === 0 || this.category_id === 0 || this.intro === '') {
+        this.$toast.fail('信息不完整')
+      } else {
+        this.$ajax.post('http://47.111.10.102:8085/goods/add', _this.$qs.stringify({
+          category_id: _this.category_id,
+          deposit: _this.deposit,
+          goods_name: _this.goods_name,
+          intro: _this.intro,
+          lease_time: _this.lease_time * 3600 * 24,
+          merchant_id: _this.$store.state.merchant_id,
+          mode: _this.mode,
+          pic_url: _this.pic_url,
+          price: _this.price,
+          stock: _this.stock,
+          status: 0
+        })).then(function (res) {
+          _this.$toast.success('提交成功')
+          _this.getGoodsList()
+          _this.$router.back()
+        }).catch(function (err) {
+          console.log(err)
+        })
+      }
+    },
+    getGoodsList () {
+      const _this = this
+      this.$ajax.get('http://47.111.10.102:8085/goods/findAllByMerchantId', {
+        params: {
+          merchant_id: _this.$store.state.merchant_id
+        }
+      }).then(function (res) {
+        if (res.data.port === '500') {
+          _this.$store.state.allList = []
+        } else {
+          _this.$store.state.allList = res.data.data
+        }
+        // 清空数组
+        _this.$store.state.downGoodsList = []
+        _this.$store.state.checkGoodsList = []
+        _this.$store.state.upGoodsList = []
+        _this.$store.state.failGoodsList = []
+        for (let i = 0; i < _this.$store.state.allList.length; i++) {
+          const item = _this.$store.state.allList[i]
+          if (item.status === -1) _this.$store.state.downGoodsList.push(item)
+          else if (item.status === 0) _this.$store.state.checkGoodsList.push(item)
+          else if (item.status === 2) _this.$store.state.failGoodsList.push(item)
+          else _this.$store.state.upGoodsList.push(item)
+        }
+      }).catch(function (err) {
+        console.log(err)
+      })
     }
   },
   mounted () {
