@@ -42,7 +42,7 @@ export default {
   name: 'home',
   methods: {
     goToPage (name) {
-      this.$router.push({ name })
+      this.$router.push({ name: name })
     },
     initInfo () {
       const _this = this
@@ -52,7 +52,7 @@ export default {
         }
       }).then(function (res) {
         if (res.data.port === '500') {
-          _this.goToPage('login')
+          this.$router.push({ name: 'login' })
         } else {
           _this.$store.state.login_name = res.data.data.merchantName
           _this.$store.state.merchant_id = res.data.data.id

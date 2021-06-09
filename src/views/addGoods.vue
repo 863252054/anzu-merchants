@@ -7,8 +7,10 @@
     <div style="margin-top: 5px">
       <van-field
         v-model="goods_name"
+        autosize
         name="商品名"
         label="商品名"
+        type="textarea"
         placeholder="商品名"
         :rules="[{ required: true, message: '请输入商品名' }]"
       />
@@ -74,7 +76,7 @@
       <van-field
         v-model="price"
         name="价格"
-        label="价格"
+        label="价格(元)"
         placeholder="请输入价格"
         type="number"
         :rules="[{ required: true, message: '请填写价格' }]"
@@ -82,7 +84,7 @@
       <van-field
         v-model="deposit"
         name="押金"
-        label="押金"
+        label="押金(元)"
         placeholder="请输入押金"
         type="number"
         :rules="[{ required: true, message: '请填写押金' }]"
@@ -90,7 +92,7 @@
       <van-field
         v-model="lease_time"
         name="租赁时间"
-        label="租赁时间"
+        label="租赁时间(天)"
         placeholder="请输入租赁时间"
         type="digit"
         :rules="[{ required: true, message: '请填写租赁时间' }]"
@@ -131,8 +133,8 @@ export default {
       mode: 0,
       price: '',
       deposit: '',
-      lease_time: '',
-      stock: ''
+      lease_time: 180,
+      stock: 66
     }
   },
   methods: {
@@ -176,7 +178,7 @@ export default {
     },
     onSubmit (values) {
       const _this = this
-      if (this.mode === 0 || this.category_id === 0 || this.intro === '') {
+      if (this.mode === 0 || this.category_id === 0 || this.intro === '' || this.pic_url === '') {
         this.$toast.fail('信息不完整')
       } else {
         this.$ajax.post('http://47.111.10.102:8085/goods/add', _this.$qs.stringify({
@@ -246,6 +248,7 @@ export default {
   bottom: 0;
   background-color: #f7f8fa;
   z-index: 200;
+  overflow: scroll;
 }
 
 </style>

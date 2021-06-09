@@ -28,22 +28,30 @@ const routes = [
         path: 'home',
         name: 'home',
         component: () => import('../views/home'),
-        children: [{
-          path: 'myAddress',
-          name: 'myAddress',
-          component: () => import('../views/myAddress'),
-          children: [{
-          // 添加地址
-            path: 'addAddress',
-            name: 'addAddress',
-            component: () => import('../views/addAddress')
-          }, {
-          // 编辑地址
-            path: 'editAddress',
-            name: 'editAddress',
-            component: () => import('../views/editAddress')
-          }]
-        }]
+        children: [
+          {
+            path: 'myAddress',
+            name: 'myAddress',
+            component: () => import('../views/myAddress'),
+            children: [
+              {
+              // 添加地址
+                path: 'addAddress',
+                name: 'addAddress',
+                component: () => import('../views/addAddress')
+              }, {
+              // 编辑地址
+                path: 'editAddress',
+                name: 'editAddress',
+                component: () => import('../views/editAddress')
+              }]
+          },
+          {
+            path: 'merchantOrder',
+            name: 'merchantOrder',
+            component: () => import('../views/merchantOrder')
+          }
+        ]
       },
       {
         path: 'goods',

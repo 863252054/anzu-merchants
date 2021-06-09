@@ -6,7 +6,7 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     merchant_id: '',
-    login_name: '山水之间',
+    login_name: '',
     login_number: '',
     balance: '',
     admin: '',
@@ -17,7 +17,12 @@ const store = new Vuex.Store({
     downGoodsList: [],
     checkGoodsList: [],
     upGoodsList: [],
-    failGoodsList: []
+    failGoodsList: [],
+    allOrderList: [],
+    sendOrderList: [],
+    receiveOrderList: [],
+    returnOrderList: [],
+    completedOrderList: []
   }
 })
 

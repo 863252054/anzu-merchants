@@ -28,7 +28,6 @@
 
 <script>
 export default {
-  inject: ['reload'],
   data () {
     return {
       chosenAddressId: this.$store.state.chosenAddressId,

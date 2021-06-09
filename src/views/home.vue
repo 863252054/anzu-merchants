@@ -31,7 +31,7 @@
 <!--    分栏-->
     <van-cell-group style="margin-top: 0.5rem">
       <van-cell icon="paid" title="账户余额"  :value="balanceAfter" />
-      <van-cell icon="balance-list-o" title="订单管理" is-link to="index" />
+      <van-cell icon="balance-list-o" title="订单管理" is-link @click="goToPage('merchantOrder')"/>
       <van-cell icon="location-o" title="收货地址" is-link @click="goToPage('myAddress')"/>
       <van-cell icon="setting-o" title="修改密码" is-link/>
     </van-cell-group>
